@@ -1,7 +1,6 @@
 package nazzer.kahdari.handlers;
 
 import nazzer.kahdari.Main;
-import nazzer.kahdari.interfaces.Module;
 import nazzer.log.LogHandler;
 import nazzer.log.LogType;
 
@@ -30,14 +29,14 @@ public class TrayHandler extends Thread implements Runnable {
                 popupMenu.addSeparator();
                 popupMenu.add(item2);
                 item1.addActionListener((ActionEvent e) -> {
-
+                    UIHandler.mainUIObj.setVisible(true);
                 });
                 item2.addActionListener((ActionEvent e) -> {
                     Main.shutdown();
                 });
                 try {
                     systemTray.add(trayIcon);
-                    logData("TrayIcon has Initialized", LogType.SUCCESS);
+                    logData("System tray has initialized", LogType.SUCCESS);
                 } catch (AWTException e) {
                     logData(e.getLocalizedMessage(), LogType.SEVERE);
                 }
