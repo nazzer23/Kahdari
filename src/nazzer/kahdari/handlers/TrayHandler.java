@@ -35,7 +35,8 @@ public class TrayHandler extends Thread implements Runnable {
 
                 pushTrayNotification("Kahdari Tray has Initialized");
             } else {
-                System.exit(-1);
+                logData("Cannot add to the SystemTray in this OS", LogType.SEVERE);
+                //System.exit(-1);
             }
         };
         EventQueue.invokeLater(runner);
@@ -46,7 +47,7 @@ public class TrayHandler extends Thread implements Runnable {
      * @param theTray
      * @return
      */
-    private static Image imageForTray(@org.jetbrains.annotations.NotNull SystemTray theTray){
+    private static Image imageForTray(SystemTray theTray){
 
         Image trayImage = ImageHandler.images.get("logo");
         Dimension trayIconSize = theTray.getTrayIconSize();
@@ -60,20 +61,24 @@ public class TrayHandler extends Thread implements Runnable {
      * Followed by the module name
      */
     public static void addNewModule(String moduleName) {
-        popupMenu.addSeparator();
-        popupMenu.add(moduleName);
+        if(SystemTray.isSupported()) {
+            popupMenu.addSeparator();
+            popupMenu.add(moduleName);
+        }
     }
 
     /**
      * Allows programatic actionListeners
      */
     public static void addMenuItem(String menuItemLabel, ActionListener actionListener) {
-        try {
-            MenuItem temp = new MenuItem(menuItemLabel);
-            temp.addActionListener(actionListener);
-            popupMenu.add(temp);
-        } catch (Exception e) {
-            logData(e.getLocalizedMessage(), LogType.SEVERE);
+        if(SystemTray.isSupported()) {
+            try {
+                MenuItem temp = new MenuItem(menuItemLabel);
+                temp.addActionListener(actionListener);
+                popupMenu.add(temp);
+            } catch (Exception e) {
+                logData(e.getLocalizedMessage(), LogType.SEVERE);
+            }
         }
     }
 
@@ -81,7 +86,8 @@ public class TrayHandler extends Thread implements Runnable {
      * Tray Icon Notification
      */
     public static void pushTrayNotification(String msg) {
-        trayIcon.displayMessage("Kahdari", msg, TrayIcon.MessageType.NONE);
+        if(SystemTray.isSupported())
+            trayIcon.displayMessage("Kahdari", msg, TrayIcon.MessageType.NONE);
     }
 
     public static void close() {

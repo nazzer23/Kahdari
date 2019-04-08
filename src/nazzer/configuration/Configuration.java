@@ -36,6 +36,22 @@ public class Configuration {
         } catch (FileNotFoundException e) {
             logData(e.getLocalizedMessage(), LogType.SEVERE);
         }
+
+        // Initialize System Constraints
+        initSystemSettings();
+    }
+
+    private static void initSystemSettings() {
+        logData("Initializing System Constraints", LogType.INFO);
+
+        String value;
+        if(System.getProperty("os.name").startsWith("Windows")) {
+            value = "Windows";
+        } else {
+            value = System.getProperty("os.name");
+        }
+        StaticVars.operatingSystemSettings.put("os", value);
+
     }
 
     /**
