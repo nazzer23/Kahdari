@@ -23,6 +23,9 @@ public class LogHandler {
             case SEVERE:
                 prefix = "Severe";
                 break;
+            case DEBUG:
+                prefix = "Debug";
+                break;
             default:
                 prefix = "Unknown";
         }

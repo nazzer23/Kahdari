@@ -12,6 +12,7 @@ public class UIHandler {
         mainUIObj = new UI_Main();
 
         logData("UIHandler has initialized", LogType.SUCCESS);
+        TrayHandler.pushTrayNotification("UIHandler has initialized");
     }
 
     public static void logData(String msg, LogType type) {

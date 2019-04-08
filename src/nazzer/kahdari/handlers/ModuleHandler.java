@@ -48,8 +48,8 @@ public class ModuleHandler extends Thread implements Runnable{
      * Populates the module HashMap providing that the suitable configuration options are selected
      */
     public void init() {
-        if(Configuration.getBoolean("tcpactive")) {
-            StaticVars.modules.put("tcpserver", new TCPServer("tcpserver"));
+        if (Configuration.getBoolean("tcpserver")) {
+            StaticVars.modules.put("tcpserver", new TCPServer("TCPServer"));
             Main.ConfigurationKeysToCheck.add("serverport");
         }
     }

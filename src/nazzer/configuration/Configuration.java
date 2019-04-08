@@ -25,11 +25,10 @@ public class Configuration {
             String d;
             while (s.hasNextLine()) {
                 d = s.nextLine();
-                if(!d.startsWith("#")) {
+                if (d.contains("=") && !d.startsWith("#")) {
                     String[] a = d.split("=");
                     config.put(a[0].toLowerCase(), a[1]);
                 }
-
             }
 
             logData("Configuration has been initialized.", LogType.SUCCESS);

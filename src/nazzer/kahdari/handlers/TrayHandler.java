@@ -23,24 +23,17 @@ public class TrayHandler extends Thread implements Runnable {
                 systemTray = SystemTray.getSystemTray();
                 popupMenu = new PopupMenu();
                 trayIcon = new TrayIcon(imageForTray(systemTray), "Kahdari", popupMenu);
-                MenuItem item1 = new MenuItem("Open");
-                MenuItem item2 = new MenuItem("Exit");
-                popupMenu.add(item1);
-                popupMenu.addSeparator();
-                popupMenu.add(item2);
-                item1.addActionListener((ActionEvent e) -> {
-                    UIHandler.mainUIObj.setVisible(true);
-                });
-                item2.addActionListener((ActionEvent e) -> {
-                    Main.shutdown();
-                });
                 try {
                     systemTray.add(trayIcon);
                     logData("System tray has initialized", LogType.SUCCESS);
                 } catch (AWTException e) {
                     logData(e.getLocalizedMessage(), LogType.SEVERE);
                 }
-                trayIcon.displayMessage("Kahdari", "Kahdari has started.", TrayIcon.MessageType.NONE);
+
+                addNewModule("Kahdari");
+                addMenuItem("Close", (ActionEvent e) -> Main.shutdown());
+
+                pushTrayNotification("Kahdari Tray has Initialized");
             } else {
                 System.exit(-1);
             }
@@ -60,6 +53,35 @@ public class TrayHandler extends Thread implements Runnable {
         trayImage = trayImage.getScaledInstance(trayIconSize.width, trayIconSize.height, Image.SCALE_SMOOTH);
 
         return trayImage;
+    }
+
+    /**
+     * Adds a splitter to the tray menu
+     * Followed by the module name
+     */
+    public static void addNewModule(String moduleName) {
+        popupMenu.addSeparator();
+        popupMenu.add(moduleName);
+    }
+
+    /**
+     * Allows programatic actionListeners
+     */
+    public static void addMenuItem(String menuItemLabel, ActionListener actionListener) {
+        try {
+            MenuItem temp = new MenuItem(menuItemLabel);
+            temp.addActionListener(actionListener);
+            popupMenu.add(temp);
+        } catch (Exception e) {
+            logData(e.getLocalizedMessage(), LogType.SEVERE);
+        }
+    }
+
+    /**
+     * Tray Icon Notification
+     */
+    public static void pushTrayNotification(String msg) {
+        trayIcon.displayMessage("Kahdari", msg, TrayIcon.MessageType.NONE);
     }
 
     public static void close() {
