@@ -25,11 +25,10 @@ public class Configuration {
             String d;
             while (s.hasNextLine()) {
                 d = s.nextLine();
-                if(!d.startsWith("#")) {
+                if (d.contains("=") && !d.startsWith("#")) {
                     String[] a = d.split("=");
                     config.put(a[0].toLowerCase(), a[1]);
                 }
-
             }
 
             logData("Configuration has been initialized.", LogType.SUCCESS);
@@ -37,6 +36,22 @@ public class Configuration {
         } catch (FileNotFoundException e) {
             logData(e.getLocalizedMessage(), LogType.SEVERE);
         }
+
+        // Initialize System Constraints
+        initSystemSettings();
+    }
+
+    private static void initSystemSettings() {
+        logData("Initializing System Constraints", LogType.INFO);
+
+        String value;
+        if(System.getProperty("os.name").startsWith("Windows")) {
+            value = "Windows";
+        } else {
+            value = System.getProperty("os.name");
+        }
+        StaticVars.operatingSystemSettings.put("os", value);
+
     }
 
     /**

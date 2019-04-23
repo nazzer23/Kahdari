@@ -5,6 +5,7 @@ public enum LogType {
     SUCCESS,
     INFO,
     WARNING,
-    SEVERE
+    SEVERE,
+    DEBUG
 
 }

@@ -11,4 +11,6 @@ public class StaticVars {
      */
     public static HashMap<String, Module> modules = new HashMap<>();
 
+    public static HashMap<String, String> operatingSystemSettings = new HashMap<>();
+
 }

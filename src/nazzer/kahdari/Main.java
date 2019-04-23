@@ -23,18 +23,20 @@ public class Main {
         // Initialize Configuration
         Configuration.init();
 
+        if (Configuration.getBoolean("enable-ui")) {
+            // ImageHandler Initialize
+            ImageHandler.initImages();
+
+            // TrayHandler Initialize
+            TrayHandler.initialize();
+
+            // UIHandler Initialize
+            UIHandler.initialize();
+        }
+
         // ModuleHandler Thread Creation
         moduleHandler = new ModuleHandler();
         moduleHandler.start();
-
-        // ImageHandler Initialize
-        ImageHandler.initImages();
-
-        // TrayHandler Initialize
-        TrayHandler.initialize();
-
-        // UIHandler Initialize
-        UIHandler.initialize();
     }
 
     /**
@@ -48,7 +50,9 @@ public class Main {
 
     public static void shutdown() {
         moduleHandler.shutdown();
-        TrayHandler.close();
+        if (Configuration.getBoolean("enable-ui")) {
+            TrayHandler.close();
+        }
     }
 
 }

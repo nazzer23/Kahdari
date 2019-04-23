@@ -1,5 +1,7 @@
 package nazzer.kahdari.interfaces;
 
+import nazzer.configuration.Configuration;
+import nazzer.kahdari.handlers.TrayHandler;
 import nazzer.log.LogHandler;
 import nazzer.log.LogType;
 
@@ -16,13 +18,16 @@ public class Module extends Thread implements Runnable {
      */
     public Module(String moduleName) {
         this.moduleName = moduleName;
+        if (Configuration.getBoolean("enable-ui")) {
+            TrayHandler.addNewModule(this.moduleName);
+        }
     }
 
     /**
      * Starts the module
      */
     public void startModule() {
-        logData("Starting module: " + moduleName, LogType.INFO);
+        logData("Starting", LogType.INFO);
         this.run();
     }
 
@@ -30,7 +35,7 @@ public class Module extends Thread implements Runnable {
      * Stops the Module
      */
     public void stopModule() {
-        logData("Stopping module: " + moduleName, LogType.INFO);
+        logData("Stopping", LogType.INFO);
     }
 
     /**
@@ -39,6 +44,6 @@ public class Module extends Thread implements Runnable {
      * @param type
      */
     protected void logData(String msg, LogType type) {
-        LogHandler.logMessage(msg, type, Module.class);
+        LogHandler.logMessage("[" + moduleName + "] " + msg, type, Module.class);
     }
 }
